@@ -4,9 +4,8 @@
 
 #ifndef STUDENT_H
 #define STUDENT_H
-
 #define M 3
-#define N 10
+
 typedef struct Student {
     char num[15];
     char name[15];
@@ -14,9 +13,11 @@ typedef struct Student {
     int classNo;
     int score[M];
     struct Student *next;
+    struct Student *prev;
 }STU;
 
 STU *head = NULL;
+STU *tail = NULL;
 
 void print_Menu();
 void Exit();
