@@ -334,3 +334,100 @@ void sort_Score_In_Descending_Order_By_Num(){
 
     printf("学生记录已按学号降序排序。\n");
 }
+
+void sort_Score_In_Ascending_Order_By_Num(){
+    STU* current = head;
+
+    if (current == NULL || current->next == NULL) {
+        printf("学生记录不足以排序。\n");
+        return;
+    }
+
+    STU* min;
+    STU* out_current = head;
+
+    while  (out_current != NULL){
+        min = out_current;
+        STU* inner_current = head;
+        while(inner_current != NULL){
+            if(strcmp(inner_current->num,min) < 0){
+                min = inner_current;
+            }
+            inner_current = inner_current->next;
+        }
+        if(min != out_current){
+            swap_nodes(out_current,min);
+            if (out_current == head){
+                head = min;
+            }
+            if (min == tail){
+                tail = out_current;
+            }
+        }
+        out_current = out_current->next;
+    }
+    printf("学生已按学号升序排序");
+}
+
+void write_To_File(){
+    FILE *fp = fopen("student.dat","wb");
+
+    if (fp == NULL){
+        printf("文件打开失败");
+        return;
+    }
+    STU* current = head;
+    STU* tnerruc = tail;
+    while (current != NULL){
+    fwrite(&current,sizeof(STU),1,fp);
+    current = current->next;
+    }
+    while(tail != head){
+    fwrite(&tnerruc,sizeof(STU),1,fp);
+    tnerruc = tnerruc->prev;
+    }
+    fclose(fp);
+    printf("学生信息已成功保存到 student.dat 文件中。\n");
+}
+
+void read_From_A_File() {
+    printf("想要读取全部学生的数据请按1。\n");
+    printf("想要根据学号和姓名读取单个学生的数据请按2。\n");
+    int ll;
+    while (1) {
+        if(scanf("%d", &ll)!=1) {
+            while (getchar()!='\n');
+            printf("无效的输入，请输入数字。\n");
+            continue;
+        }
+        switch (ll) {
+            case 1:
+                read_All_From_File();
+                break;
+            case 2:
+                read_One_From_File();
+                break;
+            default:printf("请输入1或2\n");
+        }
+        break;
+    }
+}
+
+void read_All_From_File(){
+    FILE *fp = fopen("student.dat","rb");
+    
+    if (fp == NULL){
+        printf("文件打开失败");
+        return;
+    }
+
+
+    STU *current = (STU*)malloc(sizeof(STU));
+
+    int t = fread(&current,sizeof(STU),1,fp);
+
+    for (int i = 0,i < t,i++){
+        
+    }
+
+}

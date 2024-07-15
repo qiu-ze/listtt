@@ -66,6 +66,10 @@ int main() {
                 printf("你选择的功能是Sort score in descending order by num\n");
                 sort_Score_In_Descending_Order_By_Num();
                 break;
+            case 9:
+                printf("你选择的功能是Sort score in ascending order by num\n");
+                sort_Score_In_Ascending_Order_By_Num();
+                break;
             case 13:
                 printf("Byebye\n");
                 Exit();
