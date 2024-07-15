@@ -70,6 +70,18 @@ int main() {
                 printf("你选择的功能是Sort score in ascending order by num\n");
                 sort_Score_In_Ascending_Order_By_Num();
                 break;
+            case 10:
+                printf("你选择的功能是Write to file\n");
+                write_To_File();
+                break;
+            case 11:
+                printf("你选择的功能是Read from a file\n");
+                read_From_A_File();
+                break;
+            case 12:
+                printf("你选择的功能是Insert\n");
+                Insert();
+            break;
             case 13:
                 printf("Byebye\n");
                 Exit();

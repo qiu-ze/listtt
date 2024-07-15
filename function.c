@@ -85,7 +85,7 @@ void delete_Record(){
     printf("请输入要删除的学生学号或姓名: ");
     scanf("%s",searchNumName);
 
-    if(current = NULL){
+    if(current == NULL){
         printf("无学生数据可以删除\n");
         return;
     }
@@ -111,7 +111,7 @@ void delete_Record(){
 void modify_Record(){
     STU* current = head;
 
-    if(current = NULL){
+    if(current == NULL){
         printf("无学生数据可以修改\n");
         return;
     }
@@ -147,7 +147,7 @@ void search_Record(){
     
     STU* current = head;
 
-    if(current = NULL){
+    if(current == NULL){
         printf("无学生数据可以查找\n");
         return;
     }
@@ -377,15 +377,12 @@ void write_To_File(){
         return;
     }
     STU* current = head;
-    STU* tnerruc = tail;
+
     while (current != NULL){
-    fwrite(&current,sizeof(STU),1,fp);
+    fwrite(current,sizeof(STU),1,fp);
     current = current->next;
     }
-    while(tail != head){
-    fwrite(&tnerruc,sizeof(STU),1,fp);
-    tnerruc = tnerruc->prev;
-    }
+
     fclose(fp);
     printf("学生信息已成功保存到 student.dat 文件中。\n");
 }
@@ -421,13 +418,96 @@ void read_All_From_File(){
         return;
     }
 
+    STU read_student;
 
-    STU *current = (STU*)malloc(sizeof(STU));
+    while(fread(&read_student,sizeof(STU),1,fp)) {
+        STU* new_student = (STU*)malloc(sizeof(STU));
 
-    int t = fread(&current,sizeof(STU),1,fp);
+        if (new_student == NULL) {
+            printf("内存分配失败\n");
+            fclose(fp);
+            return;
+        }
 
-    for (int i = 0,i < t,i++){
-        
+        *new_student = read_student;
+        new_student->next = NULL;
+        new_student->prev = NULL;
+
+        if(head == NULL) {
+            head = new_student;
+            tail = new_student;
+        }else {
+            new_student->prev = tail;
+            head->next = new_student;
+            tail = new_student;
+        }
+    }
+    printf("已从student.dat中读取全部学生数据\n");
+}
+
+void read_One_From_File() {
+    FILE *fp = fopen("student.dat","rb");
+
+    if (fp == NULL){
+        printf("文件打开失败");
+        return;
     }
 
+    char searchNumName[15];
+    printf("请输入要查找的学生学号或姓名: ");
+    scanf("%s",searchNumName);
+
+    STU read_student;
+    int found = 0;
+
+    while (fread(&read_student,sizeof(STU),1,fp)) {
+        if (strcmp(searchNumName,read_student.name) == 0||strcmp(searchNumName,read_student.num) == 0) {
+            printf("学号: %s\n", read_student.num);
+            printf("  姓名: %s\n",read_student.name );
+            printf("  专业: %s\n",read_student.major);
+            printf("  班级: %d\n",read_student.classNo);
+            for (int j = 0; j < M; j++) {
+                printf("  第%d门课程成绩: %d\n", j + 1, read_student.score[j]);
+            }
+            found = 1;
+            break;
+        }
+    }
+    if(!found) {
+        printf("未找到该学生的记录。\n");
+    }
+    fclose(fp);
+}
+
+void Insert() {
+    STU* current = head;
+
+    if (current == NULL || current->next == NULL) {
+        printf("学生记录不足以排序。\n");
+        return;
+    }
+
+    STU* i;
+
+    while (current != NULL) {
+            i = current->prev;
+        while (i != current && i != head ) {
+            if (CalculateTotalScore(i) < CalculateTotalScore(current)){
+                swap_nodes(i,current);
+            }
+            if(i != head) {
+                i = i->prev;
+            }
+        }
+        current = current->next;
+    }
+
+    while (head->prev != NULL) {
+        head = head->prev;
+    }
+    while (tail->next != NULL) {
+        tail = tail->next;
+    }
+
+    printf("学生记录已按总分降序排序。\n");
 }
