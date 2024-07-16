@@ -18,7 +18,7 @@ void print_Menu() {
     printf("|      10.Write to a File                             |\n");
     printf("|      11.Read from a File                            |\n");
     printf("|      12.Insert                                      |\n");
-    printf("|      13.Exit                                        |\n");
+    printf("|      0.Exit                                        |\n");
     printf("*******************************************************\n");
 }
 
@@ -82,8 +82,9 @@ int main() {
                 printf("你选择的功能是Insert\n");
                 Insert();
             break;
-            case 13:
+            case 0:
                 printf("Byebye\n");
+                system("pause");
                 Exit();
                 break;
             default: printf("无此功能\n");

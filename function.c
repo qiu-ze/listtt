@@ -350,7 +350,7 @@ void sort_Score_In_Ascending_Order_By_Num(){
         min = out_current;
         STU* inner_current = head;
         while(inner_current != NULL){
-            if(strcmp(inner_current->num,min) < 0){
+            if(strcmp(inner_current->num,min->num) < 0){
                 min = inner_current;
             }
             inner_current = inner_current->next;
@@ -491,14 +491,15 @@ void Insert() {
 
     while (current != NULL) {
             i = current->prev;
-        while (i != current && i != head ) {
+        while (i != current && i != NULL ) {
             if (CalculateTotalScore(i) < CalculateTotalScore(current)){
                 swap_nodes(i,current);
             }
-            if(i != head) {
+            if(i != NULL) {
                 i = i->prev;
             }
         }
+
         current = current->next;
     }
 
