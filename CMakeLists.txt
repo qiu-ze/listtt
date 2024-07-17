@@ -4,4 +4,5 @@ project(list)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(list main.c
-        student.h)
+        student.h
+        helpfc.c)

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "student.h"
 #include <windows.h>
+#include "helpfc.c"
 
 void free_memory() {
     STU* current = head;
@@ -19,16 +20,7 @@ void Exit() {
     exit(0);
 }
 
-int major_Confirm(const STU* new_student) {
-    if(strcmp(new_student->major,"software")!=0 && strcmp(new_student->major,"computer")!=0 && strcmp(new_student->major,"network")!=0) {
-        while (getchar()!='\n');
-        printf("无效的输入，请输入computer,software,network三者之一。\n");
-        return 0;
-    }
-    else {
-        return 1;
-    }
-}
+
 
 void append_Record() {
 
@@ -41,12 +33,18 @@ STU* new_student = (STU*)malloc(sizeof(STU));
 
     printf("输入学号: ");
     scanf("%s", new_student->num);
+    while (!validateInput(new_student->num)) {
+        printf("%s 不是正确的学号类型，请输入类似22202xxxxx的学号\n", new_student->num);
+        printf("重新输入学号: ");
+        scanf("%s", new_student->num);
+    }
     printf("输入姓名: ");
     scanf("%s",new_student->name );
     printf("输入专业: ");
     scanf("%s", new_student->major);
-    if(!major_Confirm(new_student)) {
-        return;
+    while(!major_Confirm(new_student)) {
+        printf("重新输入专业: ");
+        scanf("%s", new_student->major);
     }
     printf("输入班级: ");
     scanf("%d", &new_student->classNo);
@@ -136,12 +134,18 @@ void modify_Record(){
         if (strcmp(searchNumName, current->num) == 0 || strcmp(searchNumName, current->name) == 0) {
             printf("输入修改后学号: ");
             scanf("%s", current->num);
+            while (!validateInput(current->num)) {
+                printf("%s 不是正确的学号类型，请输入类似22202xxxxx的学号\n", current->num);
+                printf("重新输入学号: ");
+                scanf("%s", current->num);
+            }
             printf("输入修改后姓名: ");
             scanf("%s",current->name );
             printf("输入修改后专业: ");
             scanf("%s", current->major);
-            if(!major_Confirm(current)) {
-                return;
+            while(!major_Confirm(current)) {
+                printf("重新输入专业: ");
+                scanf("%s", current->major);
             }
             printf("输入修改后班级: ");
             scanf("%d", &current->classNo);
@@ -187,60 +191,9 @@ void search_Record(){
     printf("没有找到学号或姓名为 %s 的学生信息。\n", searchNumName);
 }
 
-int CalculateTotalScore(const STU* current) {
-    int total = 0;
-    for (int i = 0; i < M; i++) {
-        total += current->score[i];
-    }
-    return total;
-}
 
-void swap_nodes(STU* node1, STU* node2) {
-    if (node1 == NULL || node2 == NULL) {
-        return;
-    }
 
-    if (node1->next == node2) {
-        STU* prev_node1 = node1->prev;
-        STU* next_node2 = node2->next;
 
-        if (prev_node1 != NULL) {
-            prev_node1->next = node2;
-        }
-        node2->prev = prev_node1;
-        node2->next = node1;
-        node1->prev = node2;
-        node1->next = next_node2;
-        if (next_node2 != NULL) {
-            next_node2->prev = node1;
-        }
-    } else if (node2->next == node1) {
-        swap_nodes(node2, node1);
-    } else {
-        STU* temp_prev1 = node1->prev;
-        STU* temp_next1 = node1->next;
-        STU* temp_prev2 = node2->prev;
-        STU* temp_next2 = node2->next;
-
-        if (temp_prev1 != NULL) {
-            temp_prev1->next = node2;
-        }
-        if (temp_next1 != NULL) {
-            temp_next1->prev = node2;
-        }
-        node1->prev = temp_prev2;
-        node1->next = temp_next2;
-
-        if (temp_prev2 != NULL) {
-            temp_prev2->next = node1;
-        }
-        if (temp_next2 != NULL) {
-            temp_next2->prev = node1;
-        }
-        node2->prev = temp_prev1;
-        node2->next = temp_next1;
-    }
-}
 
 void sort_Score_In_Descending_Order_By_Sum(){
     STU* current = head;
@@ -523,3 +476,4 @@ void Insert() {
 
     printf("学生记录已按总分降序排序。\n");
 }
+

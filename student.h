@@ -5,7 +5,7 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #define M 3
-
+#include <stdbool.h>
 typedef struct Student {
     char num[15];
     char name[15];
@@ -15,6 +15,17 @@ typedef struct Student {
     struct Student *next;
     struct Student *prev;
 }STU;
+
+typedef enum {
+    STATE_START_2_0,
+    STATE_2_1,
+    STATE_2_2,
+    STATE_0,
+    STATE_2_3,
+    STATE_X,
+    STATE_VALID,
+    STATE_INVALID
+} State;
 
 STU *head = NULL;
 STU *tail = NULL;
@@ -35,5 +46,6 @@ void read_From_A_File();
 void read_All_From_File();
 void read_One_From_File();
 void Insert();
+bool validateInput(const char *input);
 
 #endif //STUDENT_H
