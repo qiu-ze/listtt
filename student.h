@@ -46,6 +46,12 @@ void read_From_A_File();
 void read_All_From_File();
 void read_One_From_File();
 void Insert();
+int major_Confirm();
+int CalculateTotalScore();
+void swap_nodes();
 bool validateInput(const char *input);
+int isUniqueNumber(const char *num, STU *head);
+int isUniqueName(const char *name, STU *head);
+void inputStudentNumber(STU *new_student, STU *head);
 
 #endif //STUDENT_H

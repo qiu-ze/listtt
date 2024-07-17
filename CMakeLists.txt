@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(list main.c
         student.h
-        helpfc.c)
+)

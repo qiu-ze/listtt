@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include "student.h"
 #include "function.c"
-#include <windows.h>
 
 void print_Menu() {
     printf("*******************************************************\n");
