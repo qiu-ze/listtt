@@ -19,7 +19,16 @@ void Exit() {
     exit(0);
 }
 
-
+int major_Confirm(const STU* new_student) {
+    if(strcmp(new_student->major,"software")!=0 && strcmp(new_student->major,"computer")!=0 && strcmp(new_student->major,"network")!=0) {
+        while (getchar()!='\n');
+        printf("无效的输入，请输入computer,software,network三者之一。\n");
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
 
 void append_Record() {
 
@@ -36,6 +45,9 @@ STU* new_student = (STU*)malloc(sizeof(STU));
     scanf("%s",new_student->name );
     printf("输入专业: ");
     scanf("%s", new_student->major);
+    if(!major_Confirm(new_student)) {
+        return;
+    }
     printf("输入班级: ");
     scanf("%d", &new_student->classNo);
     for (int j = 0; j < M; j++) {
@@ -128,6 +140,9 @@ void modify_Record(){
             scanf("%s",current->name );
             printf("输入修改后专业: ");
             scanf("%s", current->major);
+            if(!major_Confirm(current)) {
+                return;
+            }
             printf("输入修改后班级: ");
             scanf("%d", &current->classNo);
             for (int j = 0; j < M; j++) {
@@ -172,7 +187,7 @@ void search_Record(){
     printf("没有找到学号或姓名为 %s 的学生信息。\n", searchNumName);
 }
 
-int CalculateTotalScore(STU* current) {
+int CalculateTotalScore(const STU* current) {
     int total = 0;
     for (int i = 0; i < M; i++) {
         total += current->score[i];
@@ -269,11 +284,10 @@ void sort_Score_In_Ascending_Order_By_Sum() {
         return;
     }
 
-    STU* min;
     STU* outer_current = head;
 
     while (outer_current != NULL) {
-        min = outer_current;
+        STU *min = outer_current;
         STU* inner_current = outer_current->next;
 
         while (inner_current != NULL) {
@@ -343,11 +357,10 @@ void sort_Score_In_Ascending_Order_By_Num(){
         return;
     }
 
-    STU* min;
     STU* out_current = head;
 
     while  (out_current != NULL){
-        min = out_current;
+        STU *min = out_current;
         STU* inner_current = head;
         while(inner_current != NULL){
             if(strcmp(inner_current->num,min->num) < 0){
@@ -487,10 +500,8 @@ void Insert() {
         return;
     }
 
-    STU* i;
-
     while (current != NULL) {
-            i = current->prev;
+            STU *i = current->prev;
         while (i != current && i != NULL ) {
             if (CalculateTotalScore(i) < CalculateTotalScore(current)){
                 swap_nodes(i,current);
