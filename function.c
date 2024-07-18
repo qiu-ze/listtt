@@ -13,14 +13,14 @@ void free_memory() {
         current = next;
     }
     head = NULL;
-}
+}//结束清除内存调用
 
 void Exit() {
     free_memory();
     printf("退出程序\n");
     printf("谢谢您的使用\n");
     exit(0);
-}
+}//退出程序
 
 
 
@@ -30,23 +30,23 @@ STU* new_student = (STU*)malloc(sizeof(STU));
     if (new_student == NULL) {
         printf("内存分配失败");
         return;
-    }
+    }//代表自动分配内存未成功，导致new_student为NULL
 
     printf("输入学号: ");
     scanf("%s", new_student->num);
-    inputStudentNumber(new_student, head);
+    inputStudentNumber(new_student, head);//检测学号是否正确输入与是否重复的函数调用
     printf("输入姓名: ");
     scanf("%s",new_student->name );
     while(!isUniqueName(new_student->name,head)) {
         printf("已经有学生%s录入，请重新输入姓名:\n", new_student->name);
         scanf("%s", new_student->name);
-    }
+    }//检测学生姓名是否重复
     printf("输入专业: ");
     scanf("%s", new_student->major);
     while(!major_Confirm(new_student)) {
         printf("重新输入专业: ");
         scanf("%s", new_student->major);
-    }
+    }//检测专业是否正确输入三个特定专业
     printf("输入班级: ");
     scanf("%d", &new_student->classNo);
     for (int j = 0; j < M; j++) {
@@ -55,25 +55,25 @@ STU* new_student = (STU*)malloc(sizeof(STU));
     }
 
     new_student->next = NULL;
-
+//添加一名学生
     if (head == NULL) {
         new_student->prev = NULL;
         head = new_student;
         tail = new_student;
-    }
+    }//链表为空则将双向链表头尾都设置为new_student
     else {
         new_student->prev = tail;
         tail->next = new_student;
         tail = new_student;
-    }
-}
+    }//否则将new_student的prev指向原尾结点，原尾结点的next指向new_student,并将new_student设为新的尾结点
+}//添加学生函数
 
 void list_Record() {
-    STU* current = head;
+    STU* current = head;//将头结点赋给current进行循环与判断，减少错误
 
     if (current == NULL) {
         printf("无学生数据可查\n");
-    }
+    }//判断链表是否为空
     else {
         while (current != NULL) {
             printf("学号: %s\n", current->num);
@@ -84,13 +84,13 @@ void list_Record() {
                 printf("  第%d门课程成绩: %d\n", j + 1, current->score[j]);
             }
             current = current->next;
-        }
+        }//循环打印学生数据直到链表尾指针
     }
 }
 
 void delete_Record(){
     STU* current = head;
-    STU* previous = NULL;
+    STU* temp = NULL;
     
     char searchNumName[15];
     printf("请输入要删除的学生学号或姓名: ");
@@ -103,17 +103,17 @@ void delete_Record(){
 
     while (current != NULL) {
         if (strcmp(searchNumName, current->num) == 0 || strcmp(searchNumName, current->name) == 0) {
-            if (previous == NULL) {  // 如果删除的是头节点
+            if (current->prev == NULL) {  // 如果删除的是头节点
                 head = current->next;
             } else {
-                previous->next = current->next;
+                current->prev->next = current->next;
             }
-            free(current);
+            free(current);//清除已删除结点的内存
             printf("学生记录已删除\n");
             return;
         }
-        previous = current;
-        current = current->next;
+        current->prev = current;
+        current = current->prev->next;
     }
 
     printf("未找到匹配的学生记录\n");
@@ -405,7 +405,7 @@ void read_All_From_File(){
             tail = new_student;
         }else {
             new_student->prev = tail;
-            head->next = new_student;
+            tail->next = new_student;
             tail = new_student;
         }
     }
