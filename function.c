@@ -90,7 +90,6 @@ void list_Record() {
 
 void delete_Record(){
     STU* current = head;
-    STU* temp = NULL;
     
     char searchNumName[15];
     printf("请输入要删除的学生学号或姓名: ");
